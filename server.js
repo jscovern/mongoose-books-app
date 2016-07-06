@@ -92,6 +92,20 @@ app.delete('/api/books/:id', function (req, res) {
   });
 });
 
+//add a character to a book
+app.post('/api/books/:book_id/characters', function (req, res){
+  var bookId = req.params.book_id;
+  db.Book.findById(bookId)
+    .populate('author')
+    .exec(function(err, foundBook) {
+      if(err){return console.log(err);}
+      foundBook.characters.push(req.body);
+      foundBook.save();
+      res.json(foundBook);
+    });
+});
+
+
 
 
 
